@@ -1,276 +1,153 @@
-# Memora - 极光科技记事本
-
 <div align="center">
 
-**一款现代化 macOS 记事本应用，采用橙紫科技配色方案，支持语音录入**
+# Memora
 
-[![macOS](https://img.shields.io/badge/macOS-14.0+-blue.svg)](https://www.apple.com/macos/)
-[![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org/)
-[![SwiftUI](https://img.shields.io/badge/SwiftUI-5.0-green.svg)](https://developer.apple.com/xcode/swiftui/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+### 把随手记下的想法，整理成可以完成的清单。
+
+面向 macOS 的橙紫深色记事本：记录文字、管理优先级、勾选任务，并按时间快速查找。<br />
+使用 SwiftUI 与 SwiftData，源码包含语音转写和关键词解析流程。
+
+![macOS](https://img.shields.io/badge/target-macOS%2014%2B-6366F1?style=flat-square)
+![UI](https://img.shields.io/badge/UI-SwiftUI-F59E0B?style=flat-square)
+![Storage](https://img.shields.io/badge/storage-SwiftData-334155?style=flat-square)
+[![License](https://img.shields.io/badge/license-MIT-22C55E?style=flat-square)](LICENSE)
+
+**[查看源码](https://github.com/Eileenes/memoranote)** · **[快速开始](#quick-start)** · **[使用指南](#usage)** · **[当前限制](#limitations)** · **[提交问题](https://github.com/Eileenes/memoranote/issues)**
 
 </div>
 
 ---
 
-## ✨ 功能特性
+## 能做什么
 
-### 核心功能
+| 记录与清单 | 查找与管理 | 语音与界面 |
+| --- | --- | --- |
+| 创建、编辑与删除记事 | 高／中／低三级优先级 | 麦克风录音与实时语音转写 |
+| 标题、正文和多个可勾选任务项 | 搜索标题与正文 | 从部分时间、优先级关键词生成记事 |
+| 显示任务完成百分比与数量 | 按今天、最近 7 天、最近 30 天筛选 | 识别部分编号清单格式 |
+| 使用 SwiftData 保存记事 | 搜索、优先级和时间组合筛选 | 橙紫配色、深色背景与进度状态 |
 
-- 📝 **多任务清单** - 每个记事支持多个可独立勾选的任务项
-- 🎯 **优先级管理** - 高/中/低三级优先级，用不同颜色标识
-- ⏰ **时间筛选** - 支持按"今天/最近7天/最近30天"筛选记事
-- 🔍 **实时搜索** - 快速搜索标题和内容
-- 📊 **进度追踪** - 实时显示任务完成进度（如：75% [3/4]）
-- 🎨 **橙紫主题** - 橙色文字 + 紫色结构层次，科技感深色界面
-- 🎙️ **语音录入** - 支持实时语音转文字并自动创建记事（含优先级/时间解析）
+**当前仓库尚无 GitHub Release 安装包，源码构建存在已知阻塞。** 以下功能根据仓库实现整理；克隆后需要先处理重复源码参与编译的问题，再进行实际运行验证，详见[当前限制](#limitations)。
 
-### 设计亮点
+<a id="quick-start"></a>
 
-- 🌙 **深色主题** - 深邃黑色背景，专注沉浸式体验
-- 🟠 **橙紫配色** - 橙色信息强调 + 紫色视觉结构，现代科技感
-- 🔷 **简洁图标** - 现代化的勾选框图标设计
-- ⚡ **流畅动画** - 丝滑的交互体验
-- 🔐 **本地存储** - 使用 SwiftData 本地存储，隐私安全
+## 快速开始
 
----
-
-## 📸 截图
-
-> 注：如需添加应用截图，可在此处插入
-
----
-
-## 🚀 快速开始
-
-### 系统要求
-
-- macOS 14.0 (Sonoma) 或更高版本
-- Xcode 15+ (仅开发需要)
-
-### 下载安装
-
-#### 方法 1: 下载预编译版本（推荐）
-
-1. 前往 [Releases](https://github.com/duke-yeah/memoranote/releases) 页面
-2. 下载最新版本的 `Memora分享版.zip`
-3. 解压后将 `Memora.app` 拖到「应用程序」文件夹
-4. **首次打开**：右键点击 → 选择「打开」→ 在弹出对话框中点击「打开」
-5. 以后就可以正常双击打开了
-
-> ⚠️ **安全提示**：因为应用没有 Apple 开发者签名，首次打开需要手动允许。应用完全安全，只是因为是个人开发项目。
-
-#### 方法 2: 从源码编译
+### 1. 获取源码并打开工程
 
 ```bash
-# 1. 克隆仓库
-git clone https://github.com/duke-yeah/memoranote.git
+git clone https://github.com/Eileenes/memoranote.git
 cd memoranote
-
-# 2. 在 Xcode 中打开
 open Memora.xcodeproj
-
-# 3. 运行项目 (⌘R)
 ```
 
-#### 方法 3: 使用自动安装脚本
+应用 target 的最低系统版本为 **macOS 14.0**，Swift 语言模式为 **5.0**。工程记录由 **Xcode 26.2** 创建，包含文件系统同步组；开发时请使用能读取当前工程格式的 Xcode，不能仅按旧说明假定 Xcode 15 可直接打开。
+
+### 2. 检查 target 源文件与签名
+
+当前 `Memora/` 和 `Memora/Memora/` 同时保留了 `MemoraApp`、`Note`、视图等重复定义。默认同步组会将两套源码纳入同一 target，构建报 `Multiple commands produce ... .stringsdata`。先在本地整理 target membership，确保只编译一套应用入口、模型和视图；新语音功能位于外层 `Memora/`。
+
+工程保留了原开发团队的自动签名配置。在 Xcode 的 **Signing & Capabilities** 中选择你自己的团队和适用签名设置，选择 **Memora → My Mac** 后再尝试运行。处理重复文件是构建的必要步骤，不代表其余编译和运行问题已全部排除。
+
+### 3. 构建与本地安装
+
+处理上述问题后，可以在 Xcode 中按 `⌘R`，或使用命令检查构建：
 
 ```bash
-# 克隆仓库后运行安装脚本
-./install_memora.sh
+xcodebuild -project Memora.xcodeproj \
+  -scheme Memora \
+  -configuration Release \
+  -derivedDataPath ./build \
+  build
 ```
 
----
+成功时应用位于 `build/Build/Products/Release/Memora.app`。
 
-## 💡 使用指南
+仓库另有 [install_memora.sh](install_memora.sh)：它会构建，并**删除 `/Applications/Memora.app` 中的旧应用后复制新版本**。确认构建成功、了解覆盖行为后再运行 `bash install_memora.sh`。不要把脚本执行完毕等同于应用已通过签名、公证或全部功能验收。
 
-### 创建记事
+<a id="usage"></a>
 
-1. 点击右上角 **「+」** 按钮
-2. 输入标题和内容
-3. 点击 **「+ 添加清单项」** 来添加任务项
-4. 选择优先级（高/中/低）
-5. 点击 **「保存」**
+## 使用指南
+
+### 文字记事与清单
+
+1. 点击工具栏的 **＋**，输入标题、正文和任务项。
+2. 选择优先级，点击 **CREATE** 保存；编辑现有记事时使用 **SAVE**。
+3. 在列表或详情中勾选清单项，查看完成百分比和已完成数量。
+4. 使用搜索框查找标题／正文，用筛选菜单组合优先级和时间范围。
+
+时间筛选依据**记事创建时间 `createdAt`**，不是截止时间；“最近 7 天”和“最近 30 天”按当前时刻向前计算。列表按创建时间倒序显示。
 
 ### 语音创建记事
 
-1. 点击工具栏的 **麦克风按钮**
-2. 开始说话，实时查看转写结果
-3. 点击 **「SAVE NOTE」** 自动生成记事
-4. 语音文本会自动解析优先级和时间关键词（如“明天”“紧急”）
+1. 点击麦克风按钮，允许系统的麦克风和语音识别权限。
+2. 点击录音按钮开始说话，查看实时转写以及 `PARSED RESULT`。
+3. 检查文本、优先级和日期后，点击 **SAVE NOTE** 创建记事。
 
-### 勾选任务
+例如：
 
-- 在列表中直接点击任务项前的**勾选框**即可切换完成状态
-- 在详情页也可以勾选任务
+```text
+明天上午9点，紧急，准备项目演示。
 
-### 查看进度
-
-- 每个记事卡片右上角显示完成进度，例如：**75% [3/4]**
-- 绿色圆环表示进度百分比
-
-### 筛选记事
-
-点击工具栏的**筛选按钮**（漏斗图标），可以：
-
-- **按优先级筛选** - 高/中/低/全部
-- **按时间筛选** - 今天/最近7天/最近30天/全部
-- **组合筛选** - 时间 + 优先级 + 搜索
-
-### 编辑和删除
-
-- **编辑**：点击记事 → 右上角菜单 → 编辑
-- **删除**：在列表中左滑记事卡片 → 删除
-
----
-
-## 🛠️ 技术栈
-
-- **语言**: Swift 5.9+
-- **框架**: SwiftUI
-- **语音能力**: Speech + AVFoundation
-- **数据持久化**: SwiftData (iOS 17+ / macOS 14+)
-- **架构**: MVVM-lite + Repository Pattern
-- **设计系统**: 自定义 DesignSystem (极光科技主题)
-
-### 项目结构
-
-```
-Memora/
-├── App/
-│   └── MemoraApp.swift          # 应用入口
-├── Models/
-│   ├── Note.swift               # 记事数据模型
-│   ├── ChecklistItem.swift      # 清单项模型
-│   └── NotePriority.swift       # 优先级枚举
-├── Views/
-│   ├── Notes/
-│   │   ├── NoteListView.swift   # 记事列表（含时间筛选）
-│   │   ├── NoteDetailView.swift # 记事详情
-│   │   ├── NoteEditorView.swift # 记事编辑器
-│   │   └── NoteRowView.swift    # 记事行组件
-│   └── Components/
-│       └── PriorityBadge.swift  # 优先级徽章
-├── Services/
-│   └── NoteRepository.swift     # 数据访问层
-└── Design/
-    └── DesignSystem.swift       # EVA 主题设计系统
+第一整理会议记录，第二发送项目进展。
 ```
 
-### 核心特性实现
+转写默认使用 `zh-CN` 识别器；若无法创建该识别器，代码尝试 `en-US`。关键词解析由本地规则实现：支持“明天”“后天”“下周”“数字天后”等部分表达，以及“紧急”“不急”等优先级词和部分编号清单。它不调用大语言模型，也不能保证理解任意自然语言；中文数字时刻、复杂日期和否定语义需要自行核对。
 
-#### SwiftData 数据模型
+<a id="limitations"></a>
 
-```swift
-@Model
-final class Note {
-    var id: UUID
-    var title: String
-    var content: String
-    var priority: NotePriority
-    var completed: Bool
-    var createdAt: Date
-    var updatedAt: Date
+## 使用条件与当前限制
 
-    @Relationship(deleteRule: .cascade)
-    var items: [ChecklistItem]
-}
+| 场景 | 需要什么／当前状态 |
+| --- | --- |
+| 从源码运行 | macOS、兼容当前工程格式的 Xcode；先处理重复源码导致的构建阻塞 |
+| 语音录入 | 麦克风、系统权限和可用的 Apple Speech 服务；代码未强制仅在设备端识别，不承诺完全离线 |
+| 数据保存 | 使用 SwiftData；当前工程没有配置 iCloud／CloudKit 同步 |
+| 时间与任务 | 支持时间筛选及规则解析日期；没有实现系统提醒通知 |
+| 跨平台 | 当前工程仅有 macOS 应用 target；源码中的 iOS 条件分支不代表已经提供 iOS 版本 |
+| 功能扩展 | 标签、Markdown 渲染、多主题切换与云同步仍未实现 |
+
+一次禁用代码签名的本地构建已复现重复 `.stringsdata` 产物错误，尚未完成成功构建、语音录入或安装后的端到端验证。旧文档中的“直接安装”“完全安全”等表述不作为当前版本的质量或安全保证。
+
+## 文档与维护
+
+| 文档 | 内容 |
+| --- | --- |
+| [时间筛选说明](TIME_FILTER_FEATURE.md) | 时间范围和组合筛选 |
+| [安装指南](INSTALLATION_GUIDE.md) | 历史本地安装说明 |
+| [分享指南](SHARE_GUIDE.md) | 历史打包与分享流程 |
+| [主题升级指南](UPGRADE_GUIDE.md) | 橙紫主题的调整记录 |
+| [图标设计指南](EVA_ICON_DESIGN.md) | 图标设计与导入背景 |
+| [编译修复记录](COMPILE_FIX_REPORT.md) | 早期编译问题的处理记录 |
+
+这些文档保留了部分旧路径、旧环境和历史结论，使用时应结合本页的当前状态及实际工程配置核对。
+
+<details>
+<summary><b>目录结构</b></summary>
+
+```text
+memoranote/
+├── Memora.xcodeproj/          # macOS 工程、target 与签名配置
+├── Memora/
+│   ├── MemoraApp.swift        # 应用入口、SwiftData 容器
+│   ├── Note.swift            # 记事模型
+│   ├── ChecklistItem.swift   # 清单项模型
+│   ├── NoteRepository.swift  # 数据保存与查询
+│   ├── Note*View.swift       # 列表、详情、编辑与卡片
+│   ├── VoiceRecognitionService.swift  # Apple Speech 录音转写
+│   ├── VoiceNoteCreator.swift # 关键词解析与语音记事创建
+│   ├── VoiceInputView.swift  # 语音输入界面
+│   ├── DesignSystem.swift    # 橙紫深色主题
+│   ├── Assets.xcassets/      # 图标与资源
+│   └── Memora/               # 重复源码目录，需整理编译归属
+├── install_memora.sh          # 构建并替换本地应用
+└── LICENSE                   # MIT 许可证
 ```
 
-#### 时间筛选功能
+</details>
 
-```swift
-enum TimeFilter: String, CaseIterable {
-    case all = "全部"
-    case today = "今天"
-    case week = "最近7天"
-    case month = "最近30天"
+欢迎[提交 Issue](https://github.com/Eileenes/memoranote/issues) 或 Pull Request。报告时注明 macOS、Xcode 版本、操作步骤与错误日志；附图前请移除私人记事内容。
 
-    var startDate: Date? {
-        // 根据选项计算起始日期
-    }
-}
-```
+## 来源与授权
 
-#### 极光科技配色
-
-```swift
-struct DesignSystem {
-    struct Colors {
-        static let primary = Color(hex: "#8B5CF6")      // 极光紫
-        static let secondary = Color(hex: "#6D28D9")    // 深紫
-        static let accent = Color(hex: "#F97316")       // 活力橙
-        static let background = Color(hex: "#0A0A0F")   // 深邃黑
-    }
-}
-```
-
----
-
-## 📚 文档
-
-- [时间筛选功能说明](TIME_FILTER_FEATURE.md)
-- [安装指南](INSTALLATION_GUIDE.md)
-- [分享指南](SHARE_GUIDE.md)
-- [主题升级指南](UPGRADE_GUIDE.md)
-- [图标设计指南](EVA_ICON_DESIGN.md)
-
----
-
-## 🎯 开发路线图
-
-- [x] 基础记事功能
-- [x] 多任务清单
-- [x] 优先级管理
-- [x] 极光紫主题设计
-- [x] 时间筛选功能
-- [x] 实时搜索
-- [ ] iCloud 同步
-- [ ] 标签系统
-- [ ] 提醒功能
-- [ ] Markdown 支持
-- [ ] 多主题切换
-- [ ] iOS 版本
-
----
-
-## 🤝 贡献
-
-欢迎贡献代码、报告问题或提出新功能建议！
-
-1. Fork 本仓库
-2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交你的修改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启一个 Pull Request
-
----
-
-## 📝 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
-
----
-
-## 🙏 致谢
-
-- 感谢 Apple 提供的 SwiftUI 和 SwiftData 框架
-
----
-
-## 📧 联系方式
-
-如有问题或建议，欢迎通过以下方式联系：
-
-- 提交 [Issue](https://github.com/duke-yeah/memoranote/issues)
-- Pull Request
-
----
-
-<div align="center">
-
-**享受极光科技记事体验！**
-
-Made with 💜 by [duke-yeah](https://github.com/duke-yeah)
-
-</div>
+本项目采用 [MIT 许可证](LICENSE)，保留 **Copyright (c) 2025 duke-yeah** 的版权声明。仓库现由 [Eileenes](https://github.com/Eileenes) 维护；感谢 Apple 提供的 SwiftUI、SwiftData、Speech 与 AVFoundation 框架。
